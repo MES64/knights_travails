@@ -11,6 +11,15 @@ module Knight
     AVAILABLE_MOVES.map { |move| [start, move].transpose.map(&:sum) }.filter { |square| on_board(square) }
   end
 
+  def knight_moves(start, finish)
+    return [] unless on_board(start) && on_board(finish)
+
+    edges = edges_found(start, finish)
+    shortest_path = [start]
+    shortest_path.append(edges[shortest_path.last]) until shortest_path.last == finish
+    shortest_path
+  end
+
   def print_moves(start)
     finishes = possible_moves(start)
     puts HORIZONTAL_LINE
@@ -36,6 +45,21 @@ module Knight
 
   def on_board(square)
     BOARD_LIMITS.include?(square[0]) && BOARD_LIMITS.include?(square[1])
+  end
+
+  def edges_found(start, finish)
+    edges = { finish => nil }
+    queue = [finish]
+    until edges.key?(start)
+      current = queue.shift
+      possible_moves(current).each { |dest| add_to_found(dest, current, edges, queue) unless edges.key?(dest) }
+    end
+    edges
+  end
+
+  def add_to_found(dest, current, edges, queue)
+    edges[dest] = current
+    queue.push(dest)
   end
 
   def print_square(current, start, finishes)
