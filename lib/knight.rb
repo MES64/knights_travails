@@ -4,6 +4,8 @@
 module Knight
   AVAILABLE_MOVES = [[2, 1], [-2, 1], [2, -1], [-2, -1], [1, 2], [-1, 2], [1, -2], [-1, -2]].freeze
   BOARD_LIMITS = (0..7)
+  HORIZONTAL_LINE = '--------------------------'
+  VERTICAL_LINE = '|'
 
   def possible_moves(start)
     AVAILABLE_MOVES.map { |move| [start, move].transpose.map(&:sum) }.filter { |square| on_board(square) }
@@ -11,13 +13,23 @@ module Knight
 
   def print_moves(start)
     finishes = possible_moves(start)
-    puts '--------------------------'
+    puts HORIZONTAL_LINE
     BOARD_LIMITS.reverse_each do |y|
-      print '|'
+      print VERTICAL_LINE
       BOARD_LIMITS.each { |x| print_square([x, y], start, finishes) }
-      puts '|'
+      puts VERTICAL_LINE
     end
-    puts '--------------------------'
+    puts HORIZONTAL_LINE
+  end
+
+  def print_path(path)
+    puts HORIZONTAL_LINE
+    BOARD_LIMITS.reverse_each do |y|
+      print VERTICAL_LINE
+      BOARD_LIMITS.each { |x| print " #{path.index([x, y]) || '.'} " }
+      puts VERTICAL_LINE
+    end
+    puts HORIZONTAL_LINE
   end
 
   private
