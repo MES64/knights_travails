@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Knight module
+# Knight module can list the possible moves and print them on a board to the terminal
+# It can also find the shortest path between 2 squares and print this path on a board
 module Knight
   AVAILABLE_MOVES = [[2, 1], [-2, 1], [2, -1], [-2, -1], [1, 2], [-1, 2], [1, -2], [-1, -2]].freeze
   BOARD_LIMITS = (0..7)
